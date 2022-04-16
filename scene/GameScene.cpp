@@ -75,9 +75,6 @@ void GameScene::Update() {
 	viewProjection_.eye.y += move.y;
 	viewProjection_.eye.z += move.z;
 
-	//行列の再計算
-	viewProjection_.UpdateMatrix();
-
 	//注視点移動処理
 	//注視点の移動ベクトル
 	XMFLOAT3 move2 = {0, 0, 0};
@@ -96,9 +93,6 @@ void GameScene::Update() {
 	viewProjection_.target.x += move2.x;
 	viewProjection_.target.y += move2.y;
 	viewProjection_.target.z += move2.z;
-
-	//行列の再計算
-	viewProjection_.UpdateMatrix();
 
 	//上方向回転処理
 	//上方向の回転の速さ[ラジアン/flame]
