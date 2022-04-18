@@ -17,14 +17,23 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("mario.jpg");
 
-	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
+	for (int i = 0; i < maxWorldNum; i++) {
+		worldTransform_[i].scale_ = {5.0f, 5.0f, 5.0f};
 
-	worldTransform_.rotation_ = {XM_PI / 4.0f, XM_PI / 4.0f, 0.0f};
+		worldTransform_[i].rotation_ = {0.0f, 0.0f, 0.0f};
 
-	worldTransform_.translation_ = {10.0f, 10.0f, 10.0f};
+		if (i >= 16) {
+			worldTransform_[i].translation_ = {-40.0f + 10 * (i - 16), 20.0f, 0.0f};
+		} else {
+			worldTransform_[i].translation_ = {-40.0f + 10 * i, -20.0f, 0.0f};
+		}
+		
 
-	//ワールドトランスフォーム初期化
-	worldTransform_.Initialize();
+		//ワールドトランスフォーム初期化
+		worldTransform_[i].Initialize();
+	}
+
+	
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
 }
@@ -57,7 +66,10 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	for (int i = 0; i < maxWorldNum; i++) {
+		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
+	}
+	
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -71,17 +83,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	// デバッグテキストの描画
-	debugText_->DrawAll(commandList);
-	// translation
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("translation:(%f,%f,%f)", 10.0f, 10.0f, 10.0f);
-	// rotation
-	debugText_->SetPos(50, 90);
-	debugText_->Printf("rotation:(%f,%f,%f)", 0.785398f, 0.785398f, 0.0f);
-	// scale
-	debugText_->SetPos(50, 110);
-	debugText_->Printf("scale:(%f,%f,%f)", 5.0f, 5.0f, 5.0f);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

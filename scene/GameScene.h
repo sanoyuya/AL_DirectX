@@ -53,7 +53,8 @@ class GameScene {
 	// 3dモデル
 	Model* model_ = nullptr;
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_[32];
+	const int maxWorldNum = 32;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 	/// <summary>
