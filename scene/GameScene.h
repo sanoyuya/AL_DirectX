@@ -52,8 +52,11 @@ class GameScene {
 	uint32_t textureHandle_ = 0;
 	// 3dモデル
 	Model* model_ = nullptr;
+	
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
+	//終点ワールドトランスフォーム
+	WorldTransform endWorldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 	/// <summary>
