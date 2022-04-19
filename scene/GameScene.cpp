@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "Vector.h"
 
 using namespace DirectX;
 
@@ -25,7 +26,7 @@ void GameScene::Initialize() {
 
 	XMFLOAT3 endPoint = {0, 0, 0};
 
-	XMFLOAT3 frontVec = {0, 0, 0};
+	//XMFLOAT3 frontVec = {0, 0, 0};
 
 	//ワールドトランスフォーム初期化
 	worldTransform_.Initialize();
@@ -33,7 +34,7 @@ void GameScene::Initialize() {
 	//正面ベクトル
 	endPoint.z = worldTransform_.translation_.z + 1;
 
-	frontVec.z = endPoint.z - worldTransform_.translation_.z;
+	//frontVec.z = endPoint.z - worldTransform_.translation_.z;
 
 	endWorldTransform_.translation_ = endPoint;
 
@@ -60,9 +61,9 @@ void GameScene::Update() {
 		move = {0, 0, -modelSpeed};
 	}
 	if (input_->PushKey(DIK_LEFT)) {
-		move2 = {0, modelRotationSpeed, 0};
-	} else if (input_->PushKey(DIK_RIGHT)) {
 		move2 = {0, -modelRotationSpeed, 0};
+	} else if (input_->PushKey(DIK_RIGHT)) {
+		move2 = {0, modelRotationSpeed, 0};
 	}
 
 	worldTransform_.translation_.x += move.x;
@@ -121,15 +122,17 @@ void GameScene::Draw() {
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	// translation
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("translation:(%f,%f,%f)", 10.0f, 10.0f, 10.0f);
+	debugText_->SetPos(50, 30);
+	debugText_->Printf("worldTransform_.translation_:(%f,%f,%f)", worldTransform_.translation_.x,worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->SetPos(50, 50);
+	debugText_->Printf("endWorldTransform_.translation_,(%f,%f,%f)", endWorldTransform_.translation_.x,endWorldTransform_.translation_.y, endWorldTransform_.translation_.z);
 	// rotation
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("worldTransform_.rotation_:(%f,%f,%f)", worldTransform_.rotation_.x,worldTransform_.rotation_.y, worldTransform_.rotation_.z);
 	debugText_->SetPos(50, 90);
-	debugText_->Printf("rotation:(%f,%f,%f)", 0.785398f, 0.785398f, 0.0f);
+	debugText_->Printf("endWorldTransform_.rotation_,(%f,%f,%f)", endWorldTransform_.rotation_.x,endWorldTransform_.rotation_.y, endWorldTransform_.rotation_.z);
 	// scale
-	debugText_->SetPos(50, 110);
-	debugText_->Printf("scale:(%f,%f,%f)", 5.0f, 5.0f, 5.0f);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
