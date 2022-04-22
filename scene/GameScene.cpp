@@ -85,17 +85,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	// デバッグテキストの描画
-	debugText_->DrawAll(commandList);
-	// translation
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("translation:(%f,%f,%f)", 10.0f, 10.0f, 10.0f);
-	// rotation
-	debugText_->SetPos(50, 90);
-	debugText_->Printf("rotation:(%f,%f,%f)", 0.785398f, 0.785398f, 0.0f);
-	// scale
-	debugText_->SetPos(50, 110);
-	debugText_->Printf("scale:(%f,%f,%f)", 5.0f, 5.0f, 5.0f);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
