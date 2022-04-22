@@ -17,14 +17,19 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("mario.jpg");
 
-	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
+	for (size_t i = 0; i < _countof(worldTransform_); i++) {
 
-	worldTransform_.rotation_ = {XM_PI / 4.0f, XM_PI / 4.0f, 0.0f};
+		for (size_t j = 0; j < _countof(worldTransform_); j++) {
+			worldTransform_[i][j].scale_ = {1.0f, 1.0f, 1.0f};
 
-	worldTransform_.translation_ = {10.0f, 10.0f, 10.0f};
+			//平行移動を設定
+			worldTransform_[i][j].translation_ = {-16.0f + j * 4.0f, -16.0f + i * 4.0f, 0};
 
-	//ワールドトランスフォーム初期化
-	worldTransform_.Initialize();
+			//ワールドトランスフォーム初期化
+			worldTransform_[i][j].Initialize();
+		}
+	}
+
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
 }
@@ -57,7 +62,16 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	for (size_t i = 0; i < _countof(worldTransform_); i++) {
+
+		for (size_t j = 0; j < _countof(worldTransform_); j++) {
+			if (i % 2 == 1 && j % 2 == 1) {
+				continue;
+			} 
+			model_->Draw(worldTransform_[i][j], viewProjection_, textureHandle_);
+		}
+	}
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
