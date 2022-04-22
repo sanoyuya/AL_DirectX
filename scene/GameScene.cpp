@@ -17,19 +17,35 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("mario.jpg");
 
-	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
-
-	worldTransform_.rotation_ = {XM_PI / 4.0f, XM_PI / 4.0f, 0.0f};
-
-	worldTransform_.translation_ = {10.0f, 10.0f, 10.0f};
-
-	//ワールドトランスフォーム初期化
-	worldTransform_.Initialize();
+	for (size_t i = 0; i < _countof(worldTransform_); i++){
+		//ワールドトランスフォーム初期化
+		worldTransform_[i].Initialize();
+	}
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	for (size_t i = 0; i < _countof(worldTransform_); i++) {
+
+		// 度数法を変換
+		float rad = Angle[i] * XM_PI / 180.0f;
+
+		//円の位置を割り出す
+		float addx = cos(rad) * 10.0f;
+		float addy = sin(rad) * 10.0f;
+
+		//角度加算
+		Angle[i] += 2.0f;
+
+		//中心座標に位置を加算
+		worldTransform_[i].translation_.x = 0.0f + addx;
+		worldTransform_[i].translation_.y = 0.0f + addy;
+
+		//ワールドトランスフォーム初期化
+		worldTransform_[i].UpdateMatrix();
+	}
+}
 
 void GameScene::Draw() {
 
@@ -57,7 +73,10 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	for (size_t i = 0; i < _countof(worldTransform_); i++) {
+		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
+	}
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -72,16 +91,7 @@ void GameScene::Draw() {
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	// translation
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("translation:(%f,%f,%f)", 10.0f, 10.0f, 10.0f);
-	// rotation
-	debugText_->SetPos(50, 90);
-	debugText_->Printf("rotation:(%f,%f,%f)", 0.785398f, 0.785398f, 0.0f);
-	// scale
-	debugText_->SetPos(50, 110);
-	debugText_->Printf("scale:(%f,%f,%f)", 5.0f, 5.0f, 5.0f);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
