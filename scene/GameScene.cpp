@@ -51,18 +51,13 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	
-	if (spacekey == false) {
-		if (input_->PushKey(DIK_SPACE)) { //カメラ切り替え
-			num++;
-			spacekey = true;
-		}
+	if (spacekey == false && input_->PushKey(DIK_SPACE)) { //カメラ切り替え
+		num++;
+	}
+	if (input_->PushKey(DIK_SPACE)) {
+		spacekey = true;
 	} else {
-		if (input_->PushKey(DIK_SPACE)) { //カメラ切り替え
-			//書き方わっかんね
-		} else {
-			spacekey = false;
-		}
+		spacekey = false;
 	}
 
 	if (num > 2) {
