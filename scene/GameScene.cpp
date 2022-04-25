@@ -1,7 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-#include<random>
+#include <random>
 
 using namespace DirectX;
 
@@ -51,12 +51,10 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	if (spacekey == false && input_->PushKey(DIK_SPACE)) { //カメラ切り替え
+	if (spacekey == false && input_->PushKey(DIK_SPACE)) {
 		num++;
-	}
-	if (input_->PushKey(DIK_SPACE)) {
 		spacekey = true;
-	} else {
+	} else if (!input_->PushKey(DIK_SPACE)) {
 		spacekey = false;
 	}
 
@@ -73,29 +71,44 @@ void GameScene::Update() {
 	debugText_->SetPos(50, 50);
 	debugText_->Printf("Camera1");
 	debugText_->SetPos(50, 70);
-	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_[0].eye.x, viewProjection_[0].eye.y,viewProjection_[0].eye.z);
+	debugText_->Printf(
+	  "eye:(%f,%f,%f)", viewProjection_[0].eye.x, viewProjection_[0].eye.y,
+	  viewProjection_[0].eye.z);
 	debugText_->SetPos(50, 90);
-	debugText_->Printf("target:(%f,%f,%f)", viewProjection_[0].target.x, viewProjection_[0].target.y,viewProjection_[0].target.z);
+	debugText_->Printf(
+	  "target:(%f,%f,%f)", viewProjection_[0].target.x, viewProjection_[0].target.y,
+	  viewProjection_[0].target.z);
 	debugText_->SetPos(50, 110);
-	debugText_->Printf("up:(%f,%f,%f)", viewProjection_[0].up.x, viewProjection_[0].up.y, viewProjection_[0].up.z);
+	debugText_->Printf(
+	  "up:(%f,%f,%f)", viewProjection_[0].up.x, viewProjection_[0].up.y, viewProjection_[0].up.z);
 
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Camera2");
 	debugText_->SetPos(50, 170);
-	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_[1].eye.x, viewProjection_[1].eye.y,viewProjection_[1].eye.z);
+	debugText_->Printf(
+	  "eye:(%f,%f,%f)", viewProjection_[1].eye.x, viewProjection_[1].eye.y,
+	  viewProjection_[1].eye.z);
 	debugText_->SetPos(50, 190);
-	debugText_->Printf("target:(%f,%f,%f)", viewProjection_[1].target.x, viewProjection_[1].target.y,viewProjection_[1].target.z);
+	debugText_->Printf(
+	  "target:(%f,%f,%f)", viewProjection_[1].target.x, viewProjection_[1].target.y,
+	  viewProjection_[1].target.z);
 	debugText_->SetPos(50, 210);
-	debugText_->Printf("up:(%f,%f,%f)", viewProjection_[1].up.x, viewProjection_[1].up.y, viewProjection_[1].up.z);
+	debugText_->Printf(
+	  "up:(%f,%f,%f)", viewProjection_[1].up.x, viewProjection_[1].up.y, viewProjection_[1].up.z);
 
 	debugText_->SetPos(50, 250);
 	debugText_->Printf("Camera3");
 	debugText_->SetPos(50, 270);
-	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_[2].eye.x, viewProjection_[2].eye.y,viewProjection_[2].eye.z);
+	debugText_->Printf(
+	  "eye:(%f,%f,%f)", viewProjection_[2].eye.x, viewProjection_[2].eye.y,
+	  viewProjection_[2].eye.z);
 	debugText_->SetPos(50, 290);
-	debugText_->Printf("target:(%f,%f,%f)", viewProjection_[2].target.x, viewProjection_[2].target.y,viewProjection_[2].target.z);
+	debugText_->Printf(
+	  "target:(%f,%f,%f)", viewProjection_[2].target.x, viewProjection_[2].target.y,
+	  viewProjection_[2].target.z);
 	debugText_->SetPos(50, 310);
-	debugText_->Printf("up:(%f,%f,%f)", viewProjection_[2].up.x, viewProjection_[2].up.y, viewProjection_[2].up.z);
+	debugText_->Printf(
+	  "up:(%f,%f,%f)", viewProjection_[2].up.x, viewProjection_[2].up.y, viewProjection_[2].up.z);
 }
 
 void GameScene::Draw() {
@@ -125,7 +138,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	model_->Draw(worldTransform_, viewProjection_[num], textureHandle_);
-	
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
