@@ -29,8 +29,6 @@ void GameScene::Initialize() {
 	//ワールドトランスフォーム初期化
 	worldTransform_.Initialize();
 
-
-
 	//カメラ視点座標を設定
 	viewProjection_[0].eye = {posDist(engine), posDist(engine), posDist(engine)};
 	viewProjection_[1].eye = {posDist(engine), posDist(engine), posDist(engine)};
