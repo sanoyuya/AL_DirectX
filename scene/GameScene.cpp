@@ -14,8 +14,14 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
+	//自機
 	worldTransform_.Initialize();
 
+	//オブジェクト
+	worldTransform.translation_.x = 10;
+	worldTransform.translation_.z = 10;
+	worldTransform.Initialize();
+	
 	textureHandle_ = TextureManager::Load("mario.jpg");
 
 	//カメラ視点座標を設定
@@ -38,7 +44,7 @@ void GameScene::Update() {
 
 	//y軸回転行列演算
 	move.x =cos(worldTransform_.rotation_.y) * front.x + sin(worldTransform_.rotation_.y) * front.z;
-	move.z =(-sin(worldTransform_.rotation_.y)) * front.x + cos(worldTransform_.rotation_.y) * front.z;
+	move.z =-sin(worldTransform_.rotation_.y) * front.x + cos(worldTransform_.rotation_.y) * front.z;
 
 	float moveSpeed = 0.05f;
 	if (input_->PushKey(DIK_UP)) {
@@ -50,15 +56,35 @@ void GameScene::Update() {
 		worldTransform_.translation_.z -= moveSpeed * move.z;
 	}
 
-	float RotationSpeed = 0.03f;
+	float rotationSpeed = 0.02f;
 	if (input_->PushKey(DIK_LEFT)) {
-		worldTransform_.rotation_.y -= RotationSpeed;
+		worldTransform_.rotation_.y -= rotationSpeed;
 	}
 	if (input_->PushKey(DIK_RIGHT)) {
-		worldTransform_.rotation_.y += RotationSpeed;
+		worldTransform_.rotation_.y += rotationSpeed;
 	}
 
 	worldTransform_.UpdateMatrix();
+	
+	//カメラ
+	XMFLOAT3 camera(0, 0.5, 0);
+
+	//y軸回転行列演算
+	move.x = cos(XMConvertToRadians(180)) * move.x + sin(XMConvertToRadians(180)) * move.z;
+	move.z = -sin(XMConvertToRadians(180)) * move.x + cos(XMConvertToRadians(180)) * move.z;
+
+	camera.x = move.x;
+	camera.z = move.z;
+
+	float cameraDistance = 30;
+	viewProjection_.eye.x = worldTransform_.translation_.x + cameraDistance * camera.x;
+	viewProjection_.eye.y = worldTransform_.translation_.y + cameraDistance * camera.y;
+	viewProjection_.eye.z = worldTransform_.translation_.z + cameraDistance * camera.z;
+
+	viewProjection_.target.x = worldTransform_.translation_.x;
+	viewProjection_.target.y = worldTransform_.translation_.y;
+	viewProjection_.target.z = worldTransform_.translation_.z;
+	viewProjection_.UpdateMatrix();
 }
 
 void GameScene::Draw() {
@@ -88,7 +114,10 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	//自機
 	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	//オブジェクト
+	model_->Draw(worldTransform, viewProjection_, textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

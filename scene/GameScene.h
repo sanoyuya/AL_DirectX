@@ -58,6 +58,7 @@ class GameScene {
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
+	WorldTransform worldTransform;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
