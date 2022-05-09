@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 #include "Audio.h"
-#include "DebugText.h"
 #include "DirectXCommon.h"
+#include "DebugText.h"
 #include "Input.h"
 #include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include <DirectXMath.h>
+#include"DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -47,12 +47,13 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+	//デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
 	//テクスチャハンドル
-	//ファイル名を指定してテクスチャを読み込む
 	uint32_t textureHandle_ = 0;
 
 	// 3dモデル
@@ -60,7 +61,6 @@ class GameScene {
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
-	WorldTransform worldTransform;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
