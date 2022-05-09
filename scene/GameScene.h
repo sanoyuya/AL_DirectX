@@ -52,7 +52,9 @@ class GameScene {
 	/// ゲームシーン用
 	/// </summary>
 	//テクスチャハンドル
+	//ファイル名を指定してテクスチャを読み込む
 	uint32_t textureHandle_ = 0;
+
 	// 3dモデル
 	Model* model_ = nullptr;
 

@@ -42,7 +42,15 @@ void GameScene::Update() {
 	XMFLOAT3 move(0, 0, 0);
 	XMFLOAT3 front(0, 0, 1);
 
-	//y軸回転行列演算
+	float rotationSpeed = 0.02f;
+	if (input_->PushKey(DIK_LEFT)) {
+		worldTransform_.rotation_.y -= rotationSpeed;
+	}
+	if (input_->PushKey(DIK_RIGHT)) {
+		worldTransform_.rotation_.y += rotationSpeed;
+	}
+
+	// y軸回転行列演算
 	move.x =cos(worldTransform_.rotation_.y) * front.x + sin(worldTransform_.rotation_.y) * front.z;
 	move.z =-sin(worldTransform_.rotation_.y) * front.x + cos(worldTransform_.rotation_.y) * front.z;
 
@@ -54,14 +62,6 @@ void GameScene::Update() {
 	if (input_->PushKey(DIK_DOWN)) {
 		worldTransform_.translation_.x -= moveSpeed * move.x;
 		worldTransform_.translation_.z -= moveSpeed * move.z;
-	}
-
-	float rotationSpeed = 0.02f;
-	if (input_->PushKey(DIK_LEFT)) {
-		worldTransform_.rotation_.y -= rotationSpeed;
-	}
-	if (input_->PushKey(DIK_RIGHT)) {
-		worldTransform_.rotation_.y += rotationSpeed;
 	}
 
 	worldTransform_.UpdateMatrix();
@@ -81,9 +81,7 @@ void GameScene::Update() {
 	viewProjection_.eye.y = worldTransform_.translation_.y + cameraDistance * camera.y;
 	viewProjection_.eye.z = worldTransform_.translation_.z + cameraDistance * camera.z;
 
-	viewProjection_.target.x = worldTransform_.translation_.x;
-	viewProjection_.target.y = worldTransform_.translation_.y;
-	viewProjection_.target.z = worldTransform_.translation_.z;
+	viewProjection_.target = worldTransform_.translation_;
 	viewProjection_.UpdateMatrix();
 }
 
