@@ -10,6 +10,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include"DebugCamera.h"
+#include"Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -49,6 +50,10 @@ class GameScene {
 	DebugText* debugText_ = nullptr;
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
+	//自機
+	Player* player_ = nullptr;
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -58,9 +63,6 @@ class GameScene {
 
 	// 3dモデル
 	Model* model_ = nullptr;
-
-	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;

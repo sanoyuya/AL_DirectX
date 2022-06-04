@@ -9,6 +9,8 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete model_;
 	delete debugCamera_;
+	//自機の解放
+	delete player_;
 }
 
 void GameScene::Initialize() {
@@ -23,8 +25,11 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 
-	//ワールドトランスフォーム初期化
-	worldTransform_.Initialize();
+	//自機の生成
+	player_ = new Player();
+	//自機の初期化
+	player_->Initialize(model_, textureHandle_);
+
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
 
@@ -35,13 +40,35 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
-
-	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
 }
 
 void GameScene::Update() {
-	debugCamera_->Update();
+	//デバッグ時のみ有効
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_B)) {
+		if (isDebugCameraActive_) {
+			isDebugCameraActive_ = false;
+		}
+		else {
+			isDebugCameraActive_ = true;
+		}
+	}
+#endif
+	if (isDebugCameraActive_) {
+		//デバッグカメラの更新
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	}
+	else
+	{
+		viewProjection_.UpdateMatrix();
+		viewProjection_.TransferMatrix();
+	}
+
+	//自機の更新
+	player_->Update();
 }
 
 void GameScene::Draw() {
@@ -61,18 +88,7 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
-
-	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
-	for (int i = 0; i < 41; i++) {
-		if (i < 21) {
-			PrimitiveDrawer::GetInstance()->DrawLine3d(Vector3(i-10, 0, -9), Vector3(i-10, 0, 10), Vector4(0x00, 0x00, 0xff, 0xff));
-		}
-		else {
-			PrimitiveDrawer::GetInstance()->DrawLine3d(Vector3(-10, 0, i- 30), Vector3(10, 0, i- 30), Vector4(0xff, 0x00, 0x00, 0xff));
-		}
-	}
 	
-
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画
@@ -83,8 +99,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//3Dモデル描画
-	//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
-	model_->Draw(worldTransform_, debugCamera_->GetViewProjection(), textureHandle_);
+	//自機の描画
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

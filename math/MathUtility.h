@@ -2,6 +2,7 @@
 
 #include "Vector3.h"
 #include "Matrix4.h"
+#include"WorldTransform.h"
 
 namespace MathUtility {
 
@@ -62,4 +63,21 @@ Vector3 Vector3TransformNormal(const Vector3& v, const Matrix4& m);
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 Vector3 operator*(const Vector3& v, const Matrix4& m);
 
+//ラジアン変換
+float ChangeRadi(const float& angle);
+//度数変換
+float ChangeDegree(const float& angle);
+
+//スケーリング更新
+void SetMatScale(Matrix4& m, const Vector3& scale);
+//回転更新
+void SetMatRotX(Matrix4& m, const float radian);
+void SetMatRotY(Matrix4& m, const float radian);
+void SetMatRotZ(Matrix4& m, const float radian);
+//平行移動更新
+void SetMatTrans(Matrix4& m, const Vector3& trans);
+//単位行列代入
+Matrix4 IdentityMatrix();
+//行列更新
+void MatrixCalculation(WorldTransform& worldtransform);
 } // namespace MathUtility
