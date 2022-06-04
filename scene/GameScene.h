@@ -17,6 +17,20 @@
 class GameScene {
 
   public: // メンバ関数
+	   //パーツID
+	  enum PartID {
+		  kRoot,		//大元
+		  kSpine,	//脊髄
+		  kChest,	//胸
+		  kHead,		//頭
+		  kArmL,		//左腕
+		  kArmR,		//右腕
+		  kHip,		//尻
+		  kLegL,		//左足
+		  kLegR,		//右足
+
+		  kNumPartID
+	  };
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
@@ -67,3 +81,5 @@ class GameScene {
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 };
+
+void MatrixCalculation(WorldTransform& worldtransform);
