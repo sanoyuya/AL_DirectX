@@ -3,6 +3,8 @@
 #include <cassert>
 #include"AxisIndicator.h"
 #include"PrimitiveDrawer.h"
+#include "MathUtility.h"
+using namespace MathUtility;
 
 GameScene::GameScene() {}
 
@@ -30,9 +32,6 @@ void GameScene::Initialize() {
 	//自機の初期化
 	player_->Initialize(model_, textureHandle_);
 
-	//ビュープロジェクション初期化
-	viewProjection_.Initialize();
-
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -43,30 +42,6 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	//デバッグ時のみ有効
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_B)) {
-		if (isDebugCameraActive_) {
-			isDebugCameraActive_ = false;
-		}
-		else {
-			isDebugCameraActive_ = true;
-		}
-	}
-#endif
-	if (isDebugCameraActive_) {
-		//デバッグカメラの更新
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-	}
-	else
-	{
-		viewProjection_.UpdateMatrix();
-		viewProjection_.TransferMatrix();
-	}
-
 	//自機の更新
 	player_->Update();
 }
@@ -100,7 +75,7 @@ void GameScene::Draw() {
 	/// </summary>
 	//3Dモデル描画
 	//自機の描画
-	player_->Draw(viewProjection_);
+	player_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

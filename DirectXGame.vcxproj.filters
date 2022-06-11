@@ -131,9 +131,6 @@
     <ClInclude Include="scene\GameScene.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
-    <ClInclude Include="input\Input.h">
-      <Filter>ヘッダー ファイル\input</Filter>
-    </ClInclude>
     <ClInclude Include="math\Matrix4.h">
       <Filter>ヘッダー ファイル\math</Filter>
     </ClInclude>
@@ -157,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
