@@ -49,6 +49,9 @@ void Player::Move() {
 	// 2πを超えたら0に戻す
 	viewAngle = fmodf(viewAngle, 2 * PI);
 
+	//視点ベクトルを計算(半径1の円周上の座標)
+	//viewProjection_.eye = { worldTransform_.translation_.x + sinf(viewAngle) * length, 20.0f,worldTransform_.translation_.x + cosf(viewAngle) * length };
+
 	if (mode == false) {
 		if (input_->PushKey(DIK_A)) {
 			worldTransform_.rotation_.y -= rotationSpeed;
@@ -76,9 +79,6 @@ void Player::Move() {
 		if (input_->PushKey(DIK_RIGHT)) {
 			viewAngle += kEyeSpeed;
 		}
-
-		//視点ベクトルを計算(半径1の円周上の座標)
-		viewProjection_.eye = { worldTransform_.translation_.x + sinf(viewAngle) * length, 20.0f,worldTransform_.translation_.x + cosf(viewAngle) * length };
 	}
 	
 
