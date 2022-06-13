@@ -105,7 +105,7 @@ void Player::Move()
 
 		if (input_->PushKey(DIK_W))
 		{
-			camera = worldTransform_.translation_ - viewProjection_.eye;
+			camera = viewProjection_.target - viewProjection_.eye;
 			camera = Vector3Normalize(camera);
 
 			worldTransform_.translation_.x += moveSpeed * camera.x;
@@ -113,7 +113,7 @@ void Player::Move()
 		}
 		if (input_->PushKey(DIK_S))
 		{
-			camera = worldTransform_.translation_ - viewProjection_.eye;
+			camera = viewProjection_.target - viewProjection_.eye;
 			camera = Vector3Normalize(camera);
 
 			worldTransform_.translation_.x -= moveSpeed * camera.x;
