@@ -80,4 +80,6 @@ void SetMatTrans(Matrix4& m, const Vector3& trans);
 Matrix4 IdentityMatrix();
 //行列更新
 void MatrixCalculation(WorldTransform& worldtransform);
+
+Vector3 VecMatMul(Vector3& vec, Matrix4& mat);
 } // namespace MathUtility

@@ -22,6 +22,11 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 
 void Player::Update()
 {
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->IsDead();
+	});
+
 	//自機移動処理
 	Move();
 	//自機旋回処理
@@ -75,18 +80,25 @@ void Player::Rot()
 	float rotSpeed = 0.02f;
 
 	if (input_->PushKey(DIK_LEFT)) {
-		worldTransform_.rotation_.y += rotSpeed;
-	}if (input_->PushKey(DIK_RIGHT)) {
 		worldTransform_.rotation_.y -= rotSpeed;
+	}if (input_->PushKey(DIK_RIGHT)) {
+		worldTransform_.rotation_.y += rotSpeed;
 	}
 }
 
 void Player::Attack()
 {
 	if (input_->TriggerKey(DIK_SPACE)) {
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = VecMatMul(velocity, worldTransform_.matWorld_);
+
 		//弾を生成し、初期化
 		std::unique_ptr<PlayerBullet>newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 		//弾を登録する
 		bullets_.push_back(std::move(newBullet));
