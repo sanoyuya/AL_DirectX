@@ -23,6 +23,8 @@ public:
 	void Update();
 
 	void Move();
+
+	void Rot();
 	/// <summary>
 	/// UŒ‚
 	/// </summary>
