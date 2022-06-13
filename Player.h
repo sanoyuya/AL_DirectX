@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Model.h"
 #include "WorldTransform.h"
+#include"PlayerBullet.h"
 
 /// <summary>
 /// 自機
@@ -22,6 +23,10 @@ public:
 	void Update();
 
 	void Move();
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 
 	/// <summary>
 	/// 描画
@@ -37,5 +42,8 @@ private:
 	Model* model_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
+	//弾
+	PlayerBullet* bullet_ = nullptr;
 };
 

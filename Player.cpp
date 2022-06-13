@@ -59,6 +59,11 @@ void Player::Move() {
 	worldTransform_.TransferMatrix();
 }
 
+void Player::Attack()
+{
+
+}
+
 void Player::Draw(ViewProjection& viewProjection_)
 {
 	//3Dƒ‚ƒfƒ‹‚Ì•`‰æ
