@@ -13,17 +13,32 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 
 	//テクスチャ読み込み
 	textureHandle_ = TextureManager::Load("oityan.jpg");
+	//シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
+
+	//引数で受け取った初期座標をセット
+	enemyWorldTransform_.translation_ = position;
 
 	//ワールド変換の初期化
 	enemyWorldTransform_.Initialize();
-	//引数で受け取った初期座標をセット
-	enemyWorldTransform_.translation_ = position;
 }
 
 void Enemy::Update()
 {
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		return bullet->IsDead();
+	});
+
 	Move();
 	ApproachPhase();
+	//接近フェーズ初期化
+	ApproachPhaseInitialize();
+
+	//弾更新
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Update();
+	}
 }
 
 void Enemy::Move()
@@ -64,10 +79,50 @@ void Enemy::LeavePhase()
 	enemyWorldTransform_.translation_ += {-moveSpeed, moveSpeed, -moveSpeed };
 }
 
+void Enemy::Attack()
+{
+	//弾の速度
+	const float kBulletSpeed = 1.0f;
+	Vector3 velocity(0, 0, -kBulletSpeed);
+
+	//速度ベクトルを自機の向きに合わせて回転させる
+	velocity = VecMatMul(velocity, enemyWorldTransform_.matWorld_);
+
+	//弾を生成し、初期化
+	std::unique_ptr<EnemyBullet>newBullet = std::make_unique<EnemyBullet>();
+	newBullet->Initialize(enemyModel_, enemyWorldTransform_.translation_, velocity);
+
+	//弾を登録する
+	bullets_.push_back(std::move(newBullet));
+}
+
+void Enemy::Fire()
+{
+	Attack();
+}
+
+void Enemy::ApproachPhaseInitialize()
+{
+	//発射タイマーカウントダウン
+	timer--;
+	//指定時間に達した
+	if (timer < 0) {
+		//弾を発射
+		Fire();
+		//発射タイマーを初期化
+		timer = kFireInterval;
+	}
+}
+
 
 
 void Enemy::Draw(ViewProjection& viewProjection)
 {
 	//3Dモデルの描画
 	enemyModel_->Draw(enemyWorldTransform_, viewProjection, textureHandle_);
+
+	//弾描画
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
