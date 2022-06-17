@@ -23,6 +23,7 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 void Enemy::Update()
 {
 	Move();
+	ApproachPhase();
 }
 
 void Enemy::Move()
@@ -31,14 +32,39 @@ void Enemy::Move()
 	Vector3 move = { 0,0,0 };
 
 	float moveSpeed = 0.2f;
-	move = { 0.0f,0.0f ,-moveSpeed };
-
-	//座標移動
-	enemyWorldTransform_.translation_ += move;
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		ApproachPhase();
+		break;
+	case Phase::Leave:
+		LeavePhase();
+		break;
+	}
 
 	MatrixCalculation(enemyWorldTransform_);
 	enemyWorldTransform_.TransferMatrix();
 }
+
+void Enemy::ApproachPhase()
+{
+	float moveSpeed = 0.2f;
+	//移動(ベクトル加算)
+	enemyWorldTransform_.translation_ += { 0.0f, 0.0f, -moveSpeed };
+	//規定の位置に到達したら離脱
+	if (enemyWorldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::LeavePhase()
+{
+	float moveSpeed = 0.2f;
+	//移動(ベクトル加算)
+	enemyWorldTransform_.translation_ += {-moveSpeed, moveSpeed, -moveSpeed };
+}
+
+
 
 void Enemy::Draw(ViewProjection& viewProjection)
 {

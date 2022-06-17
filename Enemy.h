@@ -11,6 +11,8 @@ public:
 	void Initialize(Model* model, const Vector3& position);
 	void Update();
 	void Move();
+	void ApproachPhase();
+	void LeavePhase();
 	void Draw(ViewProjection& viewProjection);
 private:
 	//ワールド変換データ
@@ -24,5 +26,13 @@ private:
 
 	//敵
 	std::list<std::unique_ptr<Enemy>>enemy_;
-};
 
+	//行動フェーズ
+	enum class Phase {
+		Approach,	//接近
+		Leave,		//離脱する
+	};
+
+	//フェーズ
+	Phase phase_ = Phase::Approach;
+};
