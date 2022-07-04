@@ -83,10 +83,12 @@ void Enemy::Attack()
 {
 	//弾の速度
 	const float kBulletSpeed = 1.0f;
-	Vector3 velocity(0, 0, -kBulletSpeed);
 
-	//速度ベクトルを自機の向きに合わせて回転させる
-	velocity = VecMatMul(velocity, enemyWorldTransform_.matWorld_);
+	Vector3 player = player_->GetWorldPosition();
+	Vector3 enemy = GetWorldPosition();
+	Vector3 l = player - enemy;
+	Vector3Normalize(l);
+	Vector3 velocity(l * kBulletSpeed);
 
 	//弾を生成し、初期化
 	std::unique_ptr<EnemyBullet>newBullet = std::make_unique<EnemyBullet>();
@@ -125,4 +127,16 @@ void Enemy::Draw(ViewProjection& viewProjection)
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
+}
+
+Vector3 Enemy::GetWorldPosition()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = enemyWorldTransform_.translation_.x;
+	worldPos.y = enemyWorldTransform_.translation_.y;
+	worldPos.z = enemyWorldTransform_.translation_.z;
+
+	return worldPos;
 }

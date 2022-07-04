@@ -86,6 +86,18 @@ void Player::Rot()
 	}
 }
 
+Vector3 Player::GetWorldPosition()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
+
 void Player::Attack()
 {
 	if (input_->TriggerKey(DIK_SPACE)) {

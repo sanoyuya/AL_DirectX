@@ -27,6 +27,8 @@ public:
 	void Move();
 
 	void Rot();
+
+	Vector3 GetWorldPosition();
 	/// <summary>
 	/// çUåÇ
 	/// </summary>

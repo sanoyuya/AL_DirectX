@@ -3,6 +3,10 @@
 #include "WorldTransform.h"
 #include"EnemyBullet.h"
 #include "Input.h"
+#include"Player.h"
+
+//自機クラスの前方宣言
+class Player;
 
 /// <summary>
 /// 敵
@@ -19,6 +23,9 @@ public:
 	void Fire();
 	void ApproachPhaseInitialize();
 	void Draw(ViewProjection& viewProjection);
+	void SetPlayer(Player* player) { player_ = player; }
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 	//発車間隔
 	static const int kFireInterval = 60;
@@ -49,4 +56,7 @@ private:
 
 	//発射タイマー
 	int32_t timer = 0;
+
+	//自キャラ
+	Player* player_ = nullptr;
 };
