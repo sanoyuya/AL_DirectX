@@ -36,6 +36,23 @@ void PlayerBullet::Update()
 	}
 }
 
+void PlayerBullet::OnCollision()
+{
+	isDead_ = true;
+}
+
+Vector3 PlayerBullet::GetWorldPosition()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = bulletWorldTransform_.translation_.x;
+	worldPos.y = bulletWorldTransform_.translation_.y;
+	worldPos.z = bulletWorldTransform_.translation_.z;
+
+	return worldPos;
+}
+
 void PlayerBullet::Draw(const ViewProjection& viewProjection)
 {
 	bulletModel_->Draw(bulletWorldTransform_, viewProjection, textureHandle_);

@@ -18,6 +18,11 @@ public:
 	/// </summary>
 	void Update();
 
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	Vector3 GetWorldPosition();
+
 	/// <summary>
 	/// 描画
 	/// </summary>

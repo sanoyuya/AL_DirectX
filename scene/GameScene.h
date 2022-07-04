@@ -12,6 +12,8 @@
 #include"DebugCamera.h"
 #include"Player.h"
 #include"Enemy.h"
+#include"PlayerBullet.h"
+#include"EnemyBullet.h"
 
 /// <summary>
 /// ゲームシーン
@@ -38,6 +40,11 @@ class GameScene {
 	/// 毎フレーム処理
 	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollisions();
 
 	/// <summary>
 	/// 描画
