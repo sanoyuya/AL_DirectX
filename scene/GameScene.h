@@ -56,6 +56,7 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	//自機

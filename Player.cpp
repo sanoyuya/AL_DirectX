@@ -25,7 +25,7 @@ void Player::Update()
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
 		return bullet->IsDead();
-	});
+		});
 
 	//自機移動処理
 	Move();
@@ -35,7 +35,7 @@ void Player::Update()
 	Attack();
 
 	//弾更新
-	for (std::unique_ptr<PlayerBullet>& bullet:bullets_) {
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
 		bullet->Update();
 	}
 

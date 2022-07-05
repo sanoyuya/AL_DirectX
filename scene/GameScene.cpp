@@ -4,6 +4,7 @@
 #include"AxisIndicator.h"
 #include"PrimitiveDrawer.h"
 
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -174,7 +175,6 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
-	
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画

@@ -82,4 +82,5 @@ Matrix4 IdentityMatrix();
 void MatrixCalculation(WorldTransform& worldtransform);
 
 Vector3 VecMatMul(Vector3& vec, Matrix4& mat);
+
 } // namespace MathUtility

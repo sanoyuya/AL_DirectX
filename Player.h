@@ -59,4 +59,3 @@ private:
 	//’e
 	std::list<std::unique_ptr<PlayerBullet>>bullets_;
 };
-
