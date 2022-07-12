@@ -10,10 +10,6 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include"DebugCamera.h"
-#include"Player.h"
-#include"Enemy.h"
-#include"PlayerBullet.h"
-#include"EnemyBullet.h"
 
 /// <summary>
 /// ゲームシーン
@@ -42,11 +38,6 @@ class GameScene {
 	void Update();
 
 	/// <summary>
-	/// 衝突判定と応答
-	/// </summary>
-	void CheckAllCollisions();
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -59,10 +50,7 @@ class GameScene {
 
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-	//自機
-	Player* player_ = nullptr;
-	//敵
-	Enemy* enemy_ = nullptr;
+
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 
@@ -77,4 +65,21 @@ class GameScene {
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	float v = 0.25f;//速さ[m/s]
+	float λ = 5.0f;//波長[m]
+	float T = 4.0f;//周期[s]
+	float f = 10.0f;//振動数[Hz=回/s]
+	float t = 0.5f;//時刻[t]
+	float π = 3.141592654;//円周率
+	float A = 30.0f;//振幅
+	int num = 0;
+	float y[64][64] = {0};//変位
+	float x = 0.0f;//原点からの距離
+	float z = 0.0f;
+
+	int r = 5;
+	float timeSpeed = 0.01f;
+	int Aflag = 0;
+	int waveflag = 0;
 };

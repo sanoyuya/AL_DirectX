@@ -8,12 +8,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model_;
-	delete debugCamera_;
-	//自機の解放
-	delete player_;
-	//敵の解放
-	delete enemy_;
+
 }
 
 void GameScene::Initialize() {
@@ -23,34 +18,22 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
-	//ファイル名を指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("mario.jpg");
-	//3Dモデルの生成
-	model_ = Model::Create();
-
-	//自機の生成
-	player_ = new Player();
-	//敵の生成
-	enemy_ = new Enemy();
-
-	//自機の初期化
-	player_->Initialize(model_, textureHandle_);
-	//敵の初期化
-	enemy_->Initialize(model_, Vector3(30, 2, 100));
-
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
+	viewProjection_.eye = { 160,500,-160 };
+	viewProjection_.target = { 160,0,160 };
+	viewProjection_.UpdateMatrix();
+	viewProjection_.TransferMatrix();
 
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	//軸方向表示の表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+	////軸方向表示の表示を有効にする
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	////軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 
-	//敵キャラに自キャラのアドレスを渡す
-	enemy_->SetPlayer(player_);
+	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {
@@ -72,90 +55,31 @@ void GameScene::Update() {
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	}
-	else
-	{
-		viewProjection_.UpdateMatrix();
-		viewProjection_.TransferMatrix();
-	}
+	//else
+	//{
+	//	viewProjection_.UpdateMatrix();
+	//	viewProjection_.TransferMatrix();
+	//}
 
-	//自機の更新
-	player_->Update();
-	//敵の更新
-	enemy_->Update();
-
-	CheckAllCollisions();
-}
-
-void GameScene::CheckAllCollisions()
-{
-	//判定対象AとBの座標
-	Vector3 posA, posB;
-
-	//自弾リストの取得
-	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
-	//敵弾リストの取得
-	const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
-
-#pragma region 自キャラと敵弾の当たり判定
-	//自キャラの座標
-	posA = player_->GetWorldPosition();
-	int R1 = 1;
-	int R2 = 1;
-
-	//自キャラと敵弾全ての当たり判定
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-		//敵弾の座標
-		posB = bullet->GetWorldPosition();
-
-		float l = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
-
-		if (l <= (R1 + R2) * (R1 + R2)) {
-			//自キャラの衝突時コールバックを呼び出す
-			player_->OnCollision();
-			//敵弾の衝突時コールバックを呼び出す
-			bullet->OnCollision();
+	if (input_->TriggerKey(DIK_SPACE)) {
+		waveflag++;
+		if (waveflag > 1) {
+			waveflag = 0;
 		}
 	}
-#pragma endregion
 
-#pragma region 自弾と敵キャラの当たり判定
-	//自キャラの座標
-	posA = enemy_->GetWorldPosition();
-	//自キャラと敵弾全ての当たり判定
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//敵弾の座標
-		posB = bullet->GetWorldPosition();
 
-		float l = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
 
-		if (l <= (R1 + R2) * (R1 + R2)) {
-			//敵キャラの衝突時コールバックを呼び出す
-			enemy_->OnCollision();
-			//自弾の衝突時コールバックを呼び出す
-			bullet->OnCollision();
-		}
-	}
-#pragma endregion
-
-#pragma region 自弾と敵弾の当たり判定
-	//自キャラと敵弾全ての当たり判定
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//自弾の座標
-		posA = bullet->GetWorldPosition();
-
-		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-			//敵弾の座標
-			posB = bullet->GetWorldPosition();
-
-			float l = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
-
-			if (l <= (R1 + R2) * (R1 + R2)) {
-				//敵弾の衝突時コールバックを呼び出す
-				bullet->OnCollision();
+	t += timeSpeed;
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 64; j++) {
+			if (waveflag == 0) {
+				y[i][j] = A * sinf(2 * π * (t - 0.1 * i / T - x / λ));//横波
+			}if (waveflag == 1) {
+				y[i][j] = (A * sinf(2 * π * (t - 0.1 * i / T - x / λ)) + A * sinf(2 * π * (t - 0.1 * j / T - x / λ))) / 2;//横縦波
 			}
 		}
 	}
-#pragma endregion
 }
 
 void GameScene::Draw() {
@@ -185,11 +109,14 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//3Dモデル描画
-	//自機の描画
-	player_->Draw(viewProjection_);
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 64;j++) {
+			PrimitiveDrawer::GetInstance()->DrawLine3d({ i * 5.0f,y[i][j],x + j * 5.0f }, { (i + 1) * 5.0f,y[i][j], (j + 1) * 5.0f }, { 255,255,255,255 });//斜め線
+			//PrimitiveDrawer::GetInstance()->DrawLine3d({ i * 5.0f,y[i][j],x + j * 5.0f }, { i * 5.0f,y[i][j], (j + 1) * 5.0f }, { 255,255,255,255 });//十字線
+			//PrimitiveDrawer::GetInstance()->DrawLine3d({ i * 5.0f,y[i][j],x + j * 5.0f }, { (i + 1) * 5.0f,y[i][j], j * 5.0f }, { 255,255,255,255 });
+		}
+	}
 
-	//敵の描画
-	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
