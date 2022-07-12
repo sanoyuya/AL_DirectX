@@ -7,6 +7,7 @@
 #include"PlayerBullet.h"
 #include<memory>
 #include<list>
+#include"myMath.h"
 
 /// <summary>
 /// 自機
@@ -17,7 +18,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, WorldTransform* parent, const Vector3& position);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -29,6 +30,7 @@ public:
 	void Rot();
 
 	Vector3 GetWorldPosition();
+	Vector3 GetWorldRotation();
 
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();

@@ -3,20 +3,23 @@
 #include"MathUtility.h"
 using namespace MathUtility;
 
-void Player::Initialize(Model* model, uint32_t textureHandle)
+void Player::Initialize(Model* model, uint32_t textureHandle, WorldTransform* parent, const Vector3& position)
 {
 	//NULLポインタチェック
 	assert(model);
+	assert(parent);
 
 	//引数として受け取ったデータをメンバ変数に記録する
 	model_ = model;
 	textureHandle_ = textureHandle;
+	worldTransform_.parent_ = parent;
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
 	//ワールド変換の初期化
+	worldTransform_.translation_ = position;
 	worldTransform_.Initialize();
 }
 
@@ -31,6 +34,8 @@ void Player::Update()
 	Move();
 	//自機旋回処理
 	Rot();
+	//ワールド行列計算
+	myMath::ParenChildUpdate(worldTransform_);
 	//自機攻撃処理
 	Attack();
 
@@ -96,6 +101,18 @@ Vector3 Player::GetWorldPosition()
 	worldPos.z = worldTransform_.translation_.z;
 
 	return worldPos;
+}
+
+Vector3 Player::GetWorldRotation()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldRot;
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	worldRot.x = worldTransform_.rotation_.x;
+	worldRot.y = worldTransform_.rotation_.y;
+	worldRot.z = worldTransform_.rotation_.z;
+
+	return worldRot;
 }
 
 void Player::OnCollision()

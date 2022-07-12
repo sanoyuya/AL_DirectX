@@ -14,6 +14,7 @@ GameScene::~GameScene() {
 	delete player_;
 	//敵の解放
 	delete enemy_;
+	//天球
 	delete modelSkydome_;
 }
 
@@ -33,17 +34,23 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	//敵の生成
 	enemy_ = new Enemy();
-
+	//天球の生成
 	skydome_ = std::make_unique<Skydome>();
 	//3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	//レールカメラの生成
+	railCamera_ = std::make_unique<RailCamera>();
 
 	//自機の初期化
-	player_->Initialize(model_, textureHandle_);
+	player_->Initialize(model_, textureHandle_, railCamera_->GetWorldTransformPtr(), Vector3(0.0f, 0.0f, 30.0f));
 	//敵の初期化
 	enemy_->Initialize(model_, Vector3(30, 2, 100));
-
+	//天球の初期化
 	skydome_->Initialize(modelSkydome_);
+	//レールカメラの生成
+	railCamera_ = std::make_unique<RailCamera>();
+	//レールカメラの初期化
+	railCamera_->Initialize(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
 
 	//ビュープロジェクション初期化
 	viewProjection_.Initialize();
@@ -89,6 +96,12 @@ void GameScene::Update() {
 	player_->Update();
 	//敵の更新
 	enemy_->Update();
+
+	//レールカメラの更新
+	Vector3 move(0.0f, 0.0f, 0.1f);
+	Vector3 rot(0.0f, 0.0f, 0.0f);
+	viewProjection_ = railCamera_->GetViewProjection();
+	railCamera_->Update(move, rot);
 
 	CheckAllCollisions();
 }
@@ -192,7 +205,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//3Dモデル描画
-	skydome_->Draw(viewProjection_);
+	//skydome_->Draw(viewProjection_);
 	//自機の描画
 	player_->Draw(viewProjection_);
 

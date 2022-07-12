@@ -15,6 +15,7 @@
 #include"PlayerBullet.h"
 #include"EnemyBullet.h"
 #include"Skydome.h"
+#include"RailCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -77,6 +78,7 @@ class GameScene {
 	Model* model_ = nullptr;
 	Model* modelSkydome_;
 	std::unique_ptr<Skydome>skydome_;
+	std::unique_ptr<RailCamera>railCamera_;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;

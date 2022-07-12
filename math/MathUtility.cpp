@@ -97,6 +97,9 @@ void MathUtility::MatrixCalculation(WorldTransform& worldtransform)
 	SetMatTrans(matTrans, worldtransform.translation_);
 	//ŠeŽ²‚Ì‰ñ“]s—ñ‚ð‡¬
 	matRot = matRotZ * matRotX * matRotY;
+	if (worldtransform.parent_ != nullptr) {
+		worldtransform.matWorld_*= worldtransform.parent_->matWorld_;
+	}
 	//worldTransform_.matWorld_‚ÉmatScale‚ðŠ|‚¯ŽZ‚µ‚Ä‘ã“ü
 	worldtransform.matWorld_ = matScale * matRot * matTrans;
 }
