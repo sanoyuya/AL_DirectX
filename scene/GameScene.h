@@ -66,20 +66,21 @@ class GameScene {
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	float v = 0.25f;//速さ[m/s]
-	float λ = 5.0f;//波長[m]
-	float T = 4.0f;//周期[s]
-	float f = 10.0f;//振動数[Hz=回/s]
-	float t = 0.5f;//時刻[t]
-	float π = 3.141592654;//円周率
+	float v = 0.833f;//速さ[m/s]
+	float λ = 50.0f;//波長[m]
+	float T = 60.0f;//周期[s]
+	float f = 0.25f;//振動数[Hz=回/s]
+	float t = 0.0f;//時刻[t]
+	float π = 3.141592654f;//円周率
 	float A = 30.0f;//振幅
 	int num = 0;
 	float y[64][64] = {0};//変位
-	float x = 0.0f;//原点からの距離
+	//float x = 0.0f;//原点からの距離
 	float z = 0.0f;
 
 	int r = 5;
-	float timeSpeed = 0.01f;
+	float timeSpeed = 1.0f;
 	int Aflag = 0;
 	int waveflag = 0;
+	float direction = -0.1f;
 };
