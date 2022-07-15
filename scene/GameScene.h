@@ -72,13 +72,13 @@ class GameScene {
 	float f = 0.25f;//振動数[Hz=回/s]
 	float t = 0.0f;//時刻[t]
 	float π = 3.141592654f;//円周率
-	float A = 30.0f;//振幅
+	float A = 0.0f;//振幅
 	int num = 0;
 	float y[64][64] = {0};//変位
 	//float x = 0.0f;//原点からの距離
 	float z = 0.0f;
 
-	int r = 5;
+	float r = 10.0f;
 	float timeSpeed = 1.0f;
 	int Aflag = 0;
 	int waveflag = 0;
