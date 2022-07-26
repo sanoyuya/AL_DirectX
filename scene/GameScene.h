@@ -42,11 +42,6 @@ class GameScene {
 	void Update();
 
 	/// <summary>
-	/// 衝突判定と応答
-	/// </summary>
-	void CheckAllCollisions();
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -75,6 +70,8 @@ class GameScene {
 	// 3dモデル
 	Model* model_ = nullptr;
 
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 };
