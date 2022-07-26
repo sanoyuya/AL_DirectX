@@ -119,7 +119,7 @@ void GameScene::Update() {
 				}if (waveflag == 1) {
 					y[i][j] = A * sinf(2 * π * (t / T - z / λ));//縦波
 				}if (waveflag == 2) {
-					y[i][j] = (A * sinf(2 * π * (t / T - d / λ)));//左端斜め波
+					y[i][j] = A * sinf(2 * π * (t / T - d / λ));//左端斜め波
 				}if (waveflag == 3) {
 					y[i][j] = A * sinf(2 * π * (t / T - centerD / λ));//中心から
 				}
@@ -127,37 +127,32 @@ void GameScene::Update() {
 		}
 	}
 
-	if (waveflag == 4) {
+	if (waveflag >= 4) {
 		A = 15.0f;//振幅
-		for (int i = 0; i < 64; i++) {
-			for (int j = 0; j < 64; j++) {
-				float centerD1 = sqrt(((10 - i) * r) * ((10 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//左
-				float centerD2 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//右
-				float centerD3 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//上
-				float centerD4 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//下
-				y[i][j] = A * sinf(2 * π * (t / T - centerD1 / λ))+ A * sinf(2 * π * (t / T - centerD2 / λ))+ A * sinf(2 * π * (t / T - centerD3 / λ)) + A * sinf(2 * π * (t / T - centerD4 / λ));//中心から
+		if (waveflag == 4) {
+			for (int i = 0; i < 64; i++) {
+				for (int j = 0; j < 64; j++) {
+					float centerD1 = sqrt(((10 - i) * r) * ((10 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//左
+					float centerD2 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//右
+					float centerD3 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//上
+					float centerD4 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//下
+					y[i][j] = A * sinf(2 * π * (t / T - centerD1 / λ)) + A * sinf(2 * π * (t / T - centerD2 / λ)) + A * sinf(2 * π * (t / T - centerD3 / λ)) + A * sinf(2 * π * (t / T - centerD4 / λ));//中心から
+				}
 			}
 		}
-	}
-
-	if (waveflag == 5) {
-		A = 15.0f;//振幅
-		for (int i = 0; i < 64; i++) {
-			for (int j = 0; j < 64; j++) {
-				float centerD1 = sqrt(((10 - i) * r) * ((10 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//左下
-				float centerD2 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//真ん中下
-				float centerD3 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//右下
-				float centerD4 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//右真ん中
-				float centerD5 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//右上
-				float centerD6 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//真ん中上
-				float centerD7 = sqrt(((10 - i) * r) * ((10 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//左上
-				float centerD8 = sqrt(((10 - i) * r) * ((10 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//左真ん中
-				float centerD9 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//真ん中
-				y[i][j] = A * sinf(2 * π * (t / T - centerD1 / λ)) + A * sinf(2 * π * (t / T - centerD2 / λ)) +
-					A * sinf(2 * π * (t / T - centerD3 / λ)) + A * sinf(2 * π * (t / T - centerD4 / λ)) +
-					A * sinf(2 * π * (t / T - centerD5 / λ)) + A * sinf(2 * π * (t / T - centerD6 / λ)) +
-					A * sinf(2 * π * (t / T - centerD7 / λ)) + A * sinf(2 * π * (t / T - centerD8 / λ)) +
-					A * sinf(2 * π * (t / T - centerD9 / λ));
+		if (waveflag == 5) {
+			for (int i = 0; i < 64; i++) {
+				for (int j = 0; j < 64; j++) {
+					float x = i * r;//左から
+					float d = sqrt((i * r) * (i * r) + (j * r) * (j * r));
+					float d2 = sqrt(((64-i) * r) * ((64 - i) * r) + ((64 - j) * r) * ((64 - j) * r));
+					float d3 = sqrt((i * r) * (i * r) + ((64 - j) * r) * ((64 - j) * r));
+					float d4 = sqrt(((64 - i) * r) * ((64 - i) * r) + (j * r) * (j * r));
+					float centerD2 = sqrt(((54 - i) * r) * ((54 - i) * r) + ((32 - j) * r) * ((32 - j) * r));//右
+					float centerD3 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((54 - j) * r) * ((54 - j) * r));//上
+					float centerD4 = sqrt(((32 - i) * r) * ((32 - i) * r) + ((10 - j) * r) * ((10 - j) * r));//下
+					y[i][j] = A * sinf(2 * π * (t / T - x / λ))+ A * sinf(2 * π * (t / T - d2 / λ))+ A * sinf(2 * π * (t / T - d3 / λ)) + A * sinf(2 * π * (t / T - d4 / λ));//中心から
+				}
 			}
 		}
 	}
