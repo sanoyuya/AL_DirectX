@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandleSprite_, { 576,296 });
 
-	
+
 	//3Dモデルの生成
 	model_ = Model::Create();
 
@@ -100,6 +100,8 @@ void GameScene::Initialize() {
 	//上方向ベクトルを指定
 	viewProjection_.up = { 0.0f, 1.0f, 0.0f };
 
+	viewProjection_.fovAngleY = 0.6981317f;
+
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -145,13 +147,14 @@ void GameScene::Update() {
 		viewProjection_.target.y -= 0.2f;
 	}
 
-	if (input_->TriggerKey(DIK_SPACE)) {
-		if (zoomFlag == true) { zoomFlag = false; }
-		else { zoomFlag = true; }
+	if (input_->PushKey(DIK_SPACE)) {
+		viewProjection_.fovAngleY -= 0.05f;
 	}
+	else { viewProjection_.fovAngleY += 0.05f; }
 
-	if (zoomFlag == false){ viewProjection_.fovAngleY = 0.6981317f; }
-	else{ viewProjection_.fovAngleY = 0.6981317f / 2; }
+	if (viewProjection_.fovAngleY < 0.6981317f / 2) { viewProjection_.fovAngleY = 0.6981317f / 2; }
+	if (viewProjection_.fovAngleY > 0.6981317f) { viewProjection_.fovAngleY = 0.6981317f; }
+
 
 	//デバック表示
 	debugText_->SetPos(50, 50);
@@ -210,8 +213,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	if (zoomFlag == true) { sprite_->Draw(); }
-	
+	if (input_->PushKey(DIK_SPACE)) { sprite_->Draw(); }
+
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
