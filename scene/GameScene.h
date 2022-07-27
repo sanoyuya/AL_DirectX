@@ -51,21 +51,22 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+	Sprite* sprite_ = nullptr;
 
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-	//自機
-	Player* player_ = nullptr;
-	//敵
-	Enemy* enemy_ = nullptr;
+	
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+	//ズーム/アウト切り替え
+	bool zoomFlag = false;
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	uint32_t textureHandleSprite_ = 0;
 
 	// 3dモデル
 	Model* model_ = nullptr;
