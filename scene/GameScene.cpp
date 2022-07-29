@@ -111,13 +111,13 @@ void GameScene::Initialize() {
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	//軸方向表示の表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	////軸方向表示の表示を有効にする
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	////軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
+	////ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
+	//PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
 }
 
 void GameScene::Update() {
