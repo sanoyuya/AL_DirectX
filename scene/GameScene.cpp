@@ -19,7 +19,6 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -27,42 +26,43 @@ void GameScene::Initialize() {
 
 	//ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("mario.jpg");
-	//3Dモデルの生成
+
+	// 3Dモデル生成
 	model_ = Model::Create();
 
-	//自機の生成
-	player_ = new Player();
-	//敵の生成
-	enemy_ = new Enemy();
+	//ビュープロジェクションの初期化
+	viewProjection_.Initialize();
+
+	//軸方向の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+
+	//軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	//デバッグカメラの生成
+	debugCamera_ = new DebugCamera(1200, 720);
+
 	//天球の生成
 	skydome_ = std::make_unique<Skydome>();
 	//3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-	//レールカメラの生成
-	railCamera_ = std::make_unique<RailCamera>();
-
-	//自機の初期化
-	player_->Initialize(model_, textureHandle_, railCamera_->GetWorldTransformPtr(), Vector3(0.0f, 0.0f, 30.0f));
-	//敵の初期化
-	enemy_->Initialize(model_, Vector3(30, 2, 100));
 	//天球の初期化
 	skydome_->Initialize(modelSkydome_);
+
 	//レールカメラの生成
 	railCamera_ = std::make_unique<RailCamera>();
 	//レールカメラの初期化
-	railCamera_->Initialize(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f));
+	railCamera_->Initialize(Vector3(0.0f, 0.0f, -50.0f), Vector3(0.0f, 0.0f, 0.0f));
 
-	//ビュープロジェクション初期化
-	viewProjection_.Initialize();
+	//自キャラの生成
+	player_ = new Player;
+	//自キャラの初期化
+	player_->Initialize(model_, textureHandle_, railCamera_->GetWorldTransformPtr(), Vector3(0.0f, 0.0f, 30.0f));
 
-	//デバッグカメラ生成
-	debugCamera_ = new DebugCamera(1280, 720);
-
-	//軸方向表示の表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
-
+	//敵キャラの生成
+	enemy_ = new Enemy;
+	//敵キャラの初期化
+	enemy_->Initialize(model_, Vector3(2.0f, 2.0f, 200.0f));
 	//敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 }
@@ -98,7 +98,7 @@ void GameScene::Update() {
 	enemy_->Update();
 
 	//レールカメラの更新
-	Vector3 move(0.0f, 0.0f, 0.1f);
+	Vector3 move(0.0f, 0.0f, -0.1f);
 	Vector3 rot(0.0f, 0.0f, 0.0f);
 	viewProjection_ = railCamera_->GetViewProjection();
 	railCamera_->Update(move, rot);
@@ -205,7 +205,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//3Dモデル描画
-	//skydome_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 	//自機の描画
 	player_->Draw(viewProjection_);
 

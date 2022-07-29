@@ -16,6 +16,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotaion) {
 	//シングルインスタンスを取得する
 	debugText_ = DebugText::GetInstance();
 }
+
 void RailCamera::Update(Vector3& move, Vector3& rot) {
 	using namespace MathUtility;
 
