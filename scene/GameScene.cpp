@@ -111,13 +111,13 @@ void GameScene::Initialize() {
 	//デバッグカメラ生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	//軸方向表示の表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	////軸方向表示の表示を有効にする
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	////軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
+	////ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
+	//PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
 }
 
 void GameScene::Update() {
@@ -162,10 +162,24 @@ void GameScene::Update() {
 	//回転の早さ
 	const float rotSpeed = 0.05f;
 
-	worldTransforms_[PartID::kArmL].rotation_.x -= 2 * rotSpeed;
-	worldTransforms_[PartID::kArmR].rotation_.x += 2 * rotSpeed;
-	worldTransforms_[PartID::kLegL].rotation_.x += 2 * rotSpeed;
-	worldTransforms_[PartID::kLegR].rotation_.x -= 2 * rotSpeed;
+	if (rotFlag == false) {
+		worldTransforms_[PartID::kArmL].rotation_.x -= rotSpeed;
+		worldTransforms_[PartID::kArmR].rotation_.x += rotSpeed;
+		worldTransforms_[PartID::kLegL].rotation_.x += rotSpeed;
+		worldTransforms_[PartID::kLegR].rotation_.x -= rotSpeed;
+	}
+	else {
+		worldTransforms_[PartID::kArmL].rotation_.x += rotSpeed;
+		worldTransforms_[PartID::kArmR].rotation_.x -= rotSpeed;
+		worldTransforms_[PartID::kLegL].rotation_.x -= rotSpeed;
+		worldTransforms_[PartID::kLegR].rotation_.x += rotSpeed;
+	}
+
+	if (worldTransforms_[PartID::kArmL].rotation_.x < -0.8f) {
+		rotFlag = true;
+	}if (worldTransforms_[PartID::kArmL].rotation_.x > 0.8f) {
+		rotFlag = false;
+	}
 
 	//押した方向で移動ベクトルを変更
 	if (input_->PushKey(DIK_A)) {
@@ -194,7 +208,7 @@ void GameScene::Update() {
 	debugText_->SetPos(50, 130);
 	debugText_->Printf("nearZ:%f", viewProjection_.nearZ);
 	debugText_->SetPos(50, 150);
-	debugText_->Printf("Root:(%f,%f,%f)", worldTransforms_[PartID::kRoot].translation_.x, worldTransforms_[PartID::kRoot].translation_.y, worldTransforms_[PartID::kRoot].translation_.z );
+	debugText_->Printf("Root:(%f,%f,%f)", worldTransforms_[PartID::kRoot].translation_.x, worldTransforms_[PartID::kRoot].translation_.y, worldTransforms_[PartID::kRoot].translation_.z);
 }
 
 void GameScene::Draw() {

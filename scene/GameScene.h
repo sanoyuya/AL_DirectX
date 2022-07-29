@@ -81,6 +81,8 @@ class GameScene {
 	// 3dモデル
 	Model* model_ = nullptr;
 
+	bool rotFlag = false;
+
 	//ワールドトランスフォーム
 	WorldTransform worldTransforms_[100];
 	//ビュープロジェクション
