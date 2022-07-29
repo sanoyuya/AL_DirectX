@@ -52,7 +52,7 @@ void GameScene::Initialize() {
 	//キャラクター大元
 	worldTransforms_[PartID::kRoot].Initialize();
 	//脊椎
-	worldTransforms_[PartID::kSpine].translation_ = { 0, 4.5f, 0 };
+	worldTransforms_[PartID::kSpine].translation_ = { 0, 5.0f, 0 };
 	worldTransforms_[PartID::kSpine].rotation_ = { 0, 0.5f, 0 };
 	worldTransforms_[PartID::kSpine].parent_ = &worldTransforms_[PartID::kRoot];
 	worldTransforms_[PartID::kSpine].Initialize();
@@ -64,32 +64,32 @@ void GameScene::Initialize() {
 	worldTransforms_[PartID::kChest].Initialize();
 
 	//Head
-	worldTransforms_[PartID::kHead].translation_ = { 0, 4.5, 0 };
+	worldTransforms_[PartID::kHead].translation_ = { 0, 3.0f, 0 };
 	worldTransforms_[PartID::kHead].parent_ = &worldTransforms_[PartID::kChest];
 	worldTransforms_[PartID::kHead].Initialize();
 
 	//ArmL
-	worldTransforms_[PartID::kArmL].translation_ = { -4.5f, 0, 0 };
+	worldTransforms_[PartID::kArmL].translation_ = { -3.0f, 0, 0 };
 	worldTransforms_[PartID::kArmL].parent_ = &worldTransforms_[PartID::kChest];
 	worldTransforms_[PartID::kArmL].Initialize();
 	//ArmR
-	worldTransforms_[PartID::kArmR].translation_ = { 4.5f, 0, 0 };
+	worldTransforms_[PartID::kArmR].translation_ = { 3.0f, 0, 0 };
 	worldTransforms_[PartID::kArmR].parent_ = &worldTransforms_[PartID::kChest];
 	worldTransforms_[PartID::kArmR].Initialize();
 
 	//下半身
 	//Hip
-	worldTransforms_[PartID::kHip].translation_ = { 0, -4.5f, 0 };
+	worldTransforms_[PartID::kHip].translation_ = { 0, -3.0f, 0 };
 	worldTransforms_[PartID::kHip].parent_ = &worldTransforms_[PartID::kSpine];
 	worldTransforms_[PartID::kHip].Initialize();
 
 	//LegL
-	worldTransforms_[PartID::kLegL].translation_ = { -4.5f, -4.5f, 0 };
+	worldTransforms_[PartID::kLegL].translation_ = { -3.0f, -3.0f, 0 };
 	worldTransforms_[PartID::kLegL].parent_ = &worldTransforms_[PartID::kHip];
 	worldTransforms_[PartID::kLegL].Initialize();
 
 	//LegR
-	worldTransforms_[PartID::kLegR].translation_ = { 4.5f, -4.5f, 0 };
+	worldTransforms_[PartID::kLegR].translation_ = { 3.0f, -3.0f, 0 };
 	worldTransforms_[PartID::kLegR].parent_ = &worldTransforms_[PartID::kHip];
 	worldTransforms_[PartID::kLegR].Initialize();
 
