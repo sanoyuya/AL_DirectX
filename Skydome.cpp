@@ -11,7 +11,7 @@ void Skydome::Initialize() {
 	worldTransform_.TransferMatrix();
 
 	// 3DÉÇÉfÉãê∂ê¨
-	model_ = Model::CreateFromOBJ("Skydome", true);
+	model_.reset(Model::CreateFromOBJ("Skydome", true));
 }
 
 void Skydome::Update() {}

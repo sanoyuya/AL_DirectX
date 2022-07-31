@@ -1,7 +1,9 @@
 #pragma once
-#include "Matrix4.h"
-#include "Vector3.h"
+#include "MathUtility.h"
 #include "WorldTransform.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 #include <cmath>
 
 namespace myMath
@@ -151,6 +153,12 @@ namespace myMath
 	/// </summary>
 	const Vector3 Vector3Sub(const Vector3& v1, const Vector3& v2);
 
+	const Vector3 Vector3Mul(const Vector3& v, float s);
+
+	const Vector3 Vector3Add(const Vector3& v1, const Vector3& v2);
+
+	const Vector4 Vector4div(const Vector4& v1, float s);
+
 	/// <summary>
 	/// ベクトルと行列の掛け算
 	/// </summary>
@@ -160,9 +168,19 @@ namespace myMath
 	Vector3 VecMatMul(Vector3& vec, Matrix4& mat);
 
 	/// <summary>
+	/// ベクトル(行列)と行列の掛け算
+	/// </summary>
+	/// <param name="vec">ベクトル</param>
+	/// <param name="mat">行列</param>
+	/// <returns></returns>
+	Vector3 VecMatMatMulWdiv(Vector3& vec, Matrix4& mat);
+
+	/// <summary>
 	/// ワールド座標を取得
 	/// </summary>
 	/// <param name="worldTransform_"></param>
 	/// <returns></returns>
 	Vector3 GetWorldPosition(WorldTransform& worldTransform_);
-} // namespace myMath
+} // namespace MyMath
+
+Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);

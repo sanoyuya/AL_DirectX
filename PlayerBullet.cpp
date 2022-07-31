@@ -5,7 +5,8 @@
 /// </summary>
 /// <param name="model">モデル</param>
 /// <param name="position">初期座標 </param>
-void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void PlayerBullet::Initialize(
+	std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity) {
 
 	// NULLポインタチェック
 	assert(model);

@@ -1,6 +1,7 @@
 #include "myMath.h"
 namespace myMath
 {
+	using namespace MathUtility;
 
 	float ChangeRadi(const float& angle)
 	{
@@ -231,6 +232,15 @@ namespace myMath
 		return temp -= v2;
 	}
 
+	const Vector3 Vector3Mul(const Vector3& v, float s)
+	{
+		Vector3 temp(v);
+		temp.x *= s;
+		temp.y *= s;
+		temp.z *= s;
+		return temp;
+	}
+
 	float Vector3Length(Vector3 vec)
 	{
 		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
@@ -248,6 +258,45 @@ namespace myMath
 		return vec;
 	}
 
+	const Vector3 Vector3Add(const Vector3& v1, const Vector3& v2)
+	{
+		Vector3 tmp(v1);
+		tmp.x += v2.x;
+		tmp.y += v2.y;
+		tmp.z += v2.z;
+
+		return tmp;
+	}
+
+	const Vector4 Vector4div(const Vector4& v1, float s)
+	{
+		Vector4 tmp(v1);
+		tmp.x /= s;
+		tmp.y /= s;
+		tmp.z /= s;
+		tmp.w /= s;
+
+		return tmp;
+
+	}
+
+	Vector3 VecMatMatMulWdiv(Vector3& vec, Matrix4& mat)
+	{
+		Vector4 retVec = {};
+
+		retVec.x = vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + 1 * mat.m[3][0];
+
+		retVec.y = vec.x * mat.m[0][1] + vec.y * mat.m[1][1] + vec.z * mat.m[2][1] + 1 * mat.m[3][1];
+
+		retVec.z = vec.x * mat.m[0][2] + vec.y * mat.m[1][2] + vec.z * mat.m[2][2] + 1 * mat.m[3][2];
+
+		retVec.w = vec.x * mat.m[0][3] + vec.y * mat.m[1][3] + vec.z * mat.m[2][3] + 1 * mat.m[3][3];
+
+		retVec = Vector4div(retVec, retVec.w);
+
+		return { retVec.x, retVec.y, retVec.z };
+	}
+
 	//ÉèÅ[ÉãÉhç¿ïWÇéÊìæ
 	Vector3 GetWorldPosition(WorldTransform& worldTransform_)
 	{
@@ -261,4 +310,12 @@ namespace myMath
 		return worldPos;
 	}
 
-} // namespace myMath
+} // namespace MyMath
+
+Matrix4 operator*(const Matrix4& m1, const Matrix4& m2)
+{
+	Matrix4 result = m1;
+
+	return result *= m2;
+	return m1;
+}

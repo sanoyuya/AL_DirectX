@@ -7,9 +7,10 @@
 #include "Input.h"
 #include "Model.h"
 #include "ViewProjection.h"
+#include "WinApp.h"
 #include "WorldTransform.h"
 
-#include "MyMath.h"
+#include "myMath.h"
 #include "PlayerBullet.h"
 
 /// <summary>
@@ -23,12 +24,13 @@ public:
 	/// <param name="model">モデル</param>
 	/// <param name="textureHandle">テクスチャハンドル</param>
 	void Initialize(
-		Model* model, uint32_t textureHandle, WorldTransform* parent_, const Vector3& position);
+		std::shared_ptr<Model> model, uint32_t textureHandle, WorldTransform* parent_,
+		const Vector3& position);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(const ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
@@ -52,6 +54,11 @@ public:
 	/// </summary>
 	float GetRadius();
 
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
+
 	Player() = default;
 	~Player() = default;
 
@@ -60,7 +67,7 @@ private:
 	WorldTransform worldTransform_;
 
 	//モデル
-	Model* model_ = nullptr;
+	std::shared_ptr<Model> model_;
 
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
@@ -77,6 +84,12 @@ private:
 	//半径
 	const float radius_ = 1.0f;
 
+	// 3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
+
+	// 2Dレティクル用スプライト
+	std::unique_ptr<Sprite> sprite2DReticle_;
+
 	/// <summary>
 	/// 移動
 	/// </summary>
@@ -91,4 +104,14 @@ private:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+
+	/// <summary>
+	/// 3Dレティクルの計算
+	/// </summary>
+	void Reticle3D();
+
+	/// <summary>
+	/// 2Dレティクルの計算
+	/// </summary>
+	void Reticle2D(const ViewProjection& viewProjection);
 };

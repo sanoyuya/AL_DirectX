@@ -3,7 +3,7 @@
 #include <cassert>
 
 // 初期化
-void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) {
+void Enemy::Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, const Vector3& position) {
 	// NUULポインタ」チェック
 	assert(model);
 

@@ -83,7 +83,7 @@ private:
 	uint32_t enemyTextureHandle_ = 0;
 
 	// 3Dモデル
-	Model* model_ = nullptr;
+	std::shared_ptr<Model> model_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 

@@ -28,5 +28,5 @@ private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 	//モデル
-	Model* model_ = nullptr;
+	std::unique_ptr<Model> model_;
 };

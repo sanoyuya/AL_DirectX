@@ -30,7 +30,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="textureHandle">テクスチャハンドル</param>
-	void Initialize(Model* model, uint32_t textureHandle, const Vector3& position);
+	void Initialize(std::shared_ptr<Model> model, uint32_t textureHandle, const Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -99,7 +99,7 @@ private:
 	WorldTransform worldTransform_;
 
 	//モデル
-	Model* model_ = nullptr;
+	std::shared_ptr<Model> model_;
 
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
