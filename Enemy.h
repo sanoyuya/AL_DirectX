@@ -99,7 +99,7 @@ private:
 	WorldTransform worldTransform_;
 
 	//モデル
-	std::shared_ptr<Model> model_;
+	std::shared_ptr<Model> model_ = nullptr;
 
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;

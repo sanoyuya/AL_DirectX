@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <mutex>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -102,6 +103,18 @@ class Audio {
 	bool IsPlaying(uint32_t voiceHandle);
 
 	/// <summary>
+	/// 音声一時停止
+	/// </summary>
+	/// <param name="voiceHandle">再生ハンドル</param>
+	void PauseWave(uint32_t voiceHandle);
+
+	/// <summary>
+	/// 音声一時停止からの再開
+	/// </summary>
+	/// <param name="voiceHandle">再生ハンドル</param>
+	void ResumeWave(uint32_t voiceHandle);
+
+	/// <summary>
 	/// 音量設定
 	/// </summary>
 	/// <param name="voiceHandle">再生ハンドル</param>
@@ -130,4 +143,5 @@ class Audio {
 	uint32_t indexVoice_ = 0u;
 	// オーディオコールバック
 	XAudio2VoiceCallback voiceCallback_;
+	std::mutex voiceMutex_;
 };

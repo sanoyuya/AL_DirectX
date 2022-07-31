@@ -5,8 +5,7 @@
 /// </summary>
 /// <param name="model">モデル</param>
 /// <param name="position">初期座標 </param>
-void EnemyBullet::Initialize(
-	std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity) {
+void EnemyBullet::Initialize(std::shared_ptr<Model> model, const Vector3& position, const Vector3& velocity) {
 
 	// NULLポインタチェック
 	assert(model);

@@ -10,7 +10,7 @@
 #include "WinApp.h"
 #include "WorldTransform.h"
 
-#include "myMath.h"
+#include "MyMath.h"
 #include "PlayerBullet.h"
 
 /// <summary>
@@ -114,4 +114,19 @@ private:
 	/// 2Dレティクルの計算
 	/// </summary>
 	void Reticle2D(const ViewProjection& viewProjection);
+
+	/// <summary>
+	/// マウス座標を取得
+	/// </summary>
+	POINT GetMousePosition();
+
+	/// <summary>
+	/// コントローラー関係
+	/// </summary>
+	void JoyPadReticle(const ViewProjection& viewProjection);
+
+	/// <summary>
+	/// 行列計算
+	/// </summary>
+	void MouseReticle(const ViewProjection& viewProjection);
 };
