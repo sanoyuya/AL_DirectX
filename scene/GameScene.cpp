@@ -246,10 +246,6 @@ void GameScene::Update() {
 	debugText_->Printf("nearZ:%f", viewProjection_.nearZ);
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Root:(%f,%f,%f)", worldTransforms_[PartID::kRoot].translation_.x, worldTransforms_[PartID::kRoot].translation_.y, worldTransforms_[PartID::kRoot].translation_.z);
-	debugText_->SetPos(50, 170);
-	debugText_->Printf("Root:(%f)", worldTransforms_[PartID::kArmL].rotation_.x);
-	debugText_->SetPos(50, 190);
-	debugText_->Printf("rotFlag:%d", rotFlag);
 }
 
 void GameScene::Draw() {
