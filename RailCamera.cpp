@@ -1,5 +1,4 @@
 #include "RailCamera.h"
-using namespace myMath;
 RailCamera::RailCamera() {}
 
 RailCamera::~RailCamera() {}
@@ -10,23 +9,22 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotaion) {
 	worldTransform_.rotation_ = rotaion;
 
 	//ビュープロジェクションの初期化
-	viewProjection_.farZ = 400.0f;
+	// viewProjection_.farZ = 400.0f;
 	viewProjection_.Initialize();
 
 	//シングルインスタンスを取得する
 	debugText_ = DebugText::GetInstance();
 }
-
 void RailCamera::Update(Vector3& move, Vector3& rot) {
 	using namespace MathUtility;
 
 	//ワールドトランスフォームの数値を加算
-	worldTransform_.translation_ -= move;
+	worldTransform_.translation_ += move;
 	worldTransform_.rotation_ += rot;
 	//ワールドトランスフォームの更新
-	worldTransform_.matWorld_ = WorldForm(worldTransform_);
+	worldTransform_.matWorld_ = myMath::WorldForm(worldTransform_);
 
-	viewProjection_.eye = GetWorldPosition(worldTransform_);
+	viewProjection_.eye = myMath::GetWorldPosition(worldTransform_);
 	//ワールド前方ベクトル
 	Vector3 forward(0, 0, 1);
 	//レールカメラの回転を反映
@@ -45,9 +43,6 @@ void RailCamera::Update(Vector3& move, Vector3& rot) {
 	debugText_->SetPos(0, 120);
 	debugText_->Printf(
 		"RailCamera.eye:(%f,%f,%f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
-	debugText_->SetPos(0, 100);
-	debugText_->Printf(
-		" worldTransform_.translation_:(%f,%f,%f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 ViewProjection RailCamera::GetViewProjection() { return viewProjection_; }

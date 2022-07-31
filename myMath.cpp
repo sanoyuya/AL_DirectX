@@ -261,4 +261,4 @@ namespace myMath
 		return worldPos;
 	}
 
-} // namespace MyMath
+} // namespace myMath

@@ -1,7 +1,7 @@
 #pragma once
 #include "DebugText.h"
 #include "MathUtility.h"
-#include "myMath.h"
+#include "MyMath.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 /// <summary>

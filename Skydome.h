@@ -1,15 +1,18 @@
 #pragma once
-#include"Model.h"
-#include"WorldTransform.h"
+#include "Model.h"
+#include "myMath.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
+
 /// <summary>
 /// 天球
 /// </summary>
-class Skydome{
+class Skydome {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model);
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -19,7 +22,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(ViewProjection& viewProjection_);
+	void Draw(ViewProjection& viewProjection);
 
 private:
 	//ワールド変換データ
@@ -27,4 +30,3 @@ private:
 	//モデル
 	Model* model_ = nullptr;
 };
-

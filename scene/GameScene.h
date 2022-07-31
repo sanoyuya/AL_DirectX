@@ -1,31 +1,33 @@
 ﻿#pragma once
+#include <memory>
+#include<sstream>
 
 #include "Audio.h"
-#include "DirectXCommon.h"
+#include "DebugCamera.h"
 #include "DebugText.h"
+#include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include"DebugCamera.h"
-#include"Player.h"
-#include"Enemy.h"
-#include"PlayerBullet.h"
+
+#include "Player.h"
+#include "RailCamera.h"
+#include "Skydome.h"
 #include"EnemyBullet.h"
-#include"Skydome.h"
-#include"RailCamera.h"
+#include <Enemy.h>
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene {
 
-  public: // メンバ関数
-	/// <summary>
-	/// コンストクラタ
-	/// </summary>
+public: // メンバ関数
+  /// <summary>
+  /// コンストクラタ
+  /// </summary>
 	GameScene();
 
 	/// <summary>
@@ -44,16 +46,29 @@ class GameScene {
 	void Update();
 
 	/// <summary>
-	/// 衝突判定と応答
-	/// </summary>
-	void CheckAllCollisions();
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
 
-  private: // メンバ変数
+	/// <summary>
+	/// 敵弾を追加する
+	/// </summary>
+	/// <param name="enemyBullet">敵弾</param>
+	void AddEnemyBullet(std::unique_ptr<EnemyBullet>& enemyBullet);
+
+	/// <summary>
+	/// 敵発生データの読み込み
+	/// </summary>
+	void LoadEnemyPopData(const char* filepath);
+
+	/// <summary>
+	/// 敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemyPopCommands();
+
+
+private:
+	// メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -61,25 +76,50 @@ class GameScene {
 
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-	//自機
-	Player* player_ = nullptr;
-	//敵
-	Enemy* enemy_ = nullptr;
-	//デバッグカメラ有効
-	bool isDebugCameraActive_ = false;
 
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
-	// 3dモデル
-	Model* model_ = nullptr;
-	Model* modelSkydome_;
-	std::unique_ptr<Skydome>skydome_;
-	std::unique_ptr<RailCamera>railCamera_;
+	uint32_t enemyTextureHandle_ = 0;
 
+	// 3Dモデル
+	Model* model_ = nullptr;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	//自キャラ
+	std::unique_ptr<Player> player_;
+
+	//敵キャラ
+	std::list<std::unique_ptr<Enemy>> enemys_;
+
+	//弾
+	std::list<std::unique_ptr<EnemyBullet>> enemyBullets_;
+
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+
+	//天球
+	std::unique_ptr<Skydome> modelSkydome_;
+
+	//レールカメラ
+	std::unique_ptr<RailCamera> railCamera_;
+
+	//敵発生コマンド
+	std::stringstream enemyPopCommands;
+
+	//待機中フラグ
+	bool isStand_ = false;
+
+	//待機タイマー
+	int StandTime_ = 0;
+
+	/// <summary>
+	/// ゲームシーン用
+	/// </summary
+
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary
+	void CheckAllCollisions();
 };

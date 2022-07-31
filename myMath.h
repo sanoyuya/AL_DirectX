@@ -165,4 +165,4 @@ namespace myMath
 	/// <param name="worldTransform_"></param>
 	/// <returns></returns>
 	Vector3 GetWorldPosition(WorldTransform& worldTransform_);
-} // namespace MyMath
+} // namespace myMath
